@@ -1,1 +1,1 @@
-https://sugamkarki-netlify-clone.netlify.app/
+https://sugamkarki-netflix-clone.netlify.app/
