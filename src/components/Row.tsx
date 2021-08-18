@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from "react";
 import YouTube from "react-youtube";
+// @ts-ignore
 import movieTrailer from "movie-trailer";
-
+import { Movie } from "../utils/interface";
 import axios from "../axios";
 import "./Row.css";
-const base_url = "https://image.tmdb.org/t/p/original/";
-function Row({ title, fetchUrl, isLargeRow = false }) {
-  const [movies, setMovies] = useState([]);
-  const [trailerUrl, setTrailerUrl] = useState("");
+//
+const base_url: string = "https://image.tmdb.org/t/p/original/";
+interface Props {
+  title: string;
+  fetchUrl: string;
+  isLargeRow?: boolean;
+}
+interface Opts {
+  height: string;
+  width: string;
+  playerVars: {
+    autoplay: number;
+  };
+}
+function Row({ title, fetchUrl, isLargeRow = false }: Props) {
+  const [movies, setMovies] = useState<[]>([]);
+  const [trailerUrl, setTrailerUrl] = useState<string | null>("");
   useEffect(() => {
     async function fetchData() {
       const request = await axios.get(fetchUrl);
@@ -15,7 +29,7 @@ function Row({ title, fetchUrl, isLargeRow = false }) {
     }
     fetchData();
   }, [fetchUrl]);
-  const opts = {
+  const opts: Opts = {
     height: "390",
     width: "100%",
     playerVars: {
@@ -28,7 +42,7 @@ function Row({ title, fetchUrl, isLargeRow = false }) {
       <div className="row__posters">
         {/* several row posters */}
 
-        {movies.map((movie) => {
+        {movies.map((movie: Movie) => {
           //   if (movie.backdrop_path === undefined) {
           //     console.log(title);
           //   }
@@ -47,20 +61,21 @@ function Row({ title, fetchUrl, isLargeRow = false }) {
                 } else {
                   //   setTrailerUrl("");
                   movieTrailer(movie?.name || "")
-                    .then((url) => {
+                    .then((url: string) => {
                       //   setTrailerUrl();
                       const urlParams = new URLSearchParams(
                         new URL(url).search
                       );
                       setTrailerUrl(urlParams.get("v"));
                     })
-                    .catch((error) => console.log(error));
+                    .catch((error: []) => console.log(error));
                 }
               }}
             />
           );
         })}
       </div>
+      {/* @ts-ignore */}
       {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
     </div>
   );

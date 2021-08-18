@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "../axios";
 import requests from "../requests";
 import "./Banner.css";
-
+import { Movie } from "./../utils/interface";
 function Banner() {
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState<Movie>({
+    backdrop_path: "",
+    name: "",
+    overview: "",
+    poster_path: "",
+  });
   useEffect(() => {
     async function fetchData() {
       //
@@ -15,8 +20,8 @@ function Banner() {
     }
     fetchData();
   }, []);
-  console.table(movie);
-  function turncate(str, n) {
+  console.log(movie);
+  function turncate(str: string, n: number) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   }
   return (
